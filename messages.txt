@@ -4,3 +4,5 @@
 
 "Make the app UI clean using material UI to make components and datatables visually appealing and easy user experience"
 
+"WARNING The app is not listening on the expected address and will not be reachable by fly-proxy. You can fix this by configuring your app to listen on the following addresses:   - 0.0.0.0:8080 Found these processes inside the machine with open listening sockets:          PROCESS        | ADDRESSES -----------------*-----------------------------------------   /.fly/hallpass | [fdaa:18:e3b1:a7b:9ad9:c490:acc9:2]:22"
+
