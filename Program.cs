@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using MudBlazor.Services;
 using TicketingApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMudServices();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
@@ -29,5 +27,8 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+// Configure Kestrel to listen on the correct address and port for Fly.io
+app.Urls.Add("http://0.0.0.0:8080");
 
 app.Run();
