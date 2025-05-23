@@ -1,55 +1,38 @@
 @page "/events"
-@inject NavigationManager NavigationManager
 
-<h1>Upcoming Events</h1>
+<MudText Typo="Typo.h3" GutterBottom="true">Upcoming Events</MudText>
 
-@if (events == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="row">
-        @foreach (var evt in events)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@evt.Title</h5>
-                        <p class="card-text">@evt.Description</p>
-                        <p class="card-text"><small class="text-muted">@evt.Date.ToShortDateString()</small></p>
-                        <button class="btn btn-primary" @onclick="() => NavigateToBooking(evt.Id)">Book Now</button>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
+<MudGrid>
+    @foreach (var evt in events)
+    {
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardMedia Image="@evt.ImageUrl" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@evt.Title</MudText>
+                    <MudText Typo="Typo.body2">@evt.Description</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Book Now</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
 
 @code {
-    private List<Event> events;
-
-    protected override void OnInitialized()
+    private List<Event> events = new List<Event>
     {
-        // TODO: Replace with actual data fetching from a service
-        events = new List<Event>
-        {
-            new Event { Id = 1, Title = "Summer Concert", Description = "Annual summer music festival", Date = DateTime.Now.AddDays(30) },
-            new Event { Id = 2, Title = "Tech Conference", Description = "Latest in technology and innovation", Date = DateTime.Now.AddDays(45) },
-            new Event { Id = 3, Title = "Food Fair", Description = "Taste cuisines from around the world", Date = DateTime.Now.AddDays(60) }
-        };
-    }
-
-    private void NavigateToBooking(int eventId)
-    {
-        NavigationManager.NavigateTo($"/booking/{eventId}");
-    }
+        new Event { Title = "Concert in the Park", Description = "Enjoy live music in the open air", ImageUrl = "images/concert.jpg" },
+        new Event { Title = "Tech Conference 2023", Description = "The latest in technology and innovation", ImageUrl = "images/tech-conf.jpg" },
+        new Event { Title = "Food Festival", Description = "Taste cuisines from around the world", ImageUrl = "images/food-fest.jpg" },
+    };
 
     public class Event
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
