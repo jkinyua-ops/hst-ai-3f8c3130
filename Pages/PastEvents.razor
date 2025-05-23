@@ -1,0 +1,48 @@
+@page "/past-events"
+
+<h1>Past Events</h1>
+
+@if (pastEvents == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        @foreach (var evt in pastEvents)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@evt.Title</h5>
+                        <p class="card-text">@evt.Description</p>
+                        <p class="card-text"><small class="text-muted">@evt.Date.ToShortDateString()</small></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Event> pastEvents;
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data fetching from a service
+        pastEvents = new List<Event>
+        {
+            new Event { Id = 1, Title = "Spring Festival", Description = "Annual spring celebration", Date = DateTime.Now.AddDays(-30) },
+            new Event { Id = 2, Title = "Winter Gala", Description = "Elegant winter fundraiser", Date = DateTime.Now.AddDays(-60) },
+            new Event { Id = 3, Title = "Art Exhibition", Description = "Showcase of local artists", Date = DateTime.Now.AddDays(-90) }
+        };
+    }
+
+    public class Event
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+    }
+}
