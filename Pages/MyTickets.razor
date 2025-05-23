@@ -1,53 +1,38 @@
-@page "/my-tickets"
+@page "/mytickets"
 
-<h1>My Tickets</h1>
+<MudText Typo="Typo.h3" GutterBottom="true">My Tickets</MudText>
 
-@if (tickets == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Event</th>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ticket in tickets)
-            {
-                <tr>
-                    <td>@ticket.EventTitle</td>
-                    <td>@ticket.EventDate.ToShortDateString()</td>
-                    <td>@ticket.Quantity</td>
-                    <td>@ticket.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<MudTable Items="@tickets" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Event</MudTh>
+        <MudTh>Date</MudTh>
+        <MudTh>Quantity</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Event">@context.EventName</MudTd>
+        <MudTd DataLabel="Date">@context.EventDate.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
+        <MudTd DataLabel="Status">
+            <MudChip Color="@(context.Status == "Active" ? Color.Success : Color.Error)" Size="Size.Small">
+                @context.Status
+            </MudChip>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
 
 @code {
-    private List<Ticket> tickets;
-
-    protected override void OnInitialized()
+    private bool _loading = false;
+    private List<Ticket> tickets = new List<Ticket>
     {
-        // TODO: Replace with actual data fetching from a service
-        tickets = new List<Ticket>
-        {
-            new Ticket { EventTitle = "Summer Concert", EventDate = DateTime.Now.AddDays(30), Quantity = 2, Status = "Confirmed" },
-            new Ticket { EventTitle = "Tech Conference", EventDate = DateTime.Now.AddDays(45), Quantity = 1, Status = "Confirmed" },
-            new Ticket { EventTitle = "Food Fair", EventDate = DateTime.Now.AddDays(-5), Quantity = 3, Status = "Completed" }
-        };
-    }
+        new Ticket { EventName = "Concert in the Park", EventDate = DateTime.Now.AddDays(30), Quantity = 2, Status = "Active" },
+        new Ticket { EventName = "Tech Conference 2023", EventDate = DateTime.Now.AddDays(60), Quantity = 1, Status = "Active" },
+        new Ticket { EventName = "Food Festival", EventDate = DateTime.Now.AddDays(-10), Quantity = 3, Status = "Used" },
+    };
 
     public class Ticket
     {
-        public string EventTitle { get; set; }
+        public string EventName { get; set; }
         public DateTime EventDate { get; set; }
         public int Quantity { get; set; }
         public string Status { get; set; }
