@@ -2,3 +2,5 @@
 
 "add pages for viewing events, making bookings and paying via stripe. Also include pages for viewing purchased tickets and past events"
 
+"Make the app UI clean using material UI to make components and datatables visually appealing and easy user experience"
+
