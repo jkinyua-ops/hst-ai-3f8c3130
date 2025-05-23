@@ -1,31 +1,111 @@
 @inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<PageTitle>TicketingApp</PageTitle>
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">Ticketing App</MudText>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+<div class="page">
+    <div class="sidebar">
         <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
             @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
+        </article>
+    </main>
+</div>
 
-@code {
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
+<style>
+    :root {
+        --teal-primary: #008080;
+        --teal-secondary: #20B2AA;
+        --teal-light: #E0F2F1;
+        --teal-dark: #006666;
+        --white: #ffffff;
     }
-}
+
+    .page {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    .sidebar {
+        background-image: linear-gradient(180deg, var(--teal-primary) 0%, var(--teal-dark) 70%);
+    }
+
+    .top-row {
+        background-color: var(--teal-light);
+        border-bottom: 1px solid var(--teal-secondary);
+        justify-content: flex-end;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+        .top-row ::deep a, .top-row ::deep .btn-link {
+            white-space: nowrap;
+            margin-left: 1.5rem;
+            text-decoration: none;
+        }
+
+        .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .top-row ::deep a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    @media (max-width: 640.98px) {
+        .top-row:not(.auth) {
+            display: none;
+        }
+
+        .top-row.auth {
+            justify-content: space-between;
+        }
+
+        .top-row ::deep a, .top-row ::deep .btn-link {
+            margin-left: 0;
+        }
+    }
+
+    @media (min-width: 641px) {
+        .page {
+            flex-direction: row;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .top-row {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .top-row.auth ::deep a:first-child {
+            flex: 1;
+            text-align: right;
+            width: 0;
+        }
+
+        .top-row, article {
+            padding-left: 2rem !important;
+            padding-right: 1.5rem !important;
+        }
+    }
+</style>
