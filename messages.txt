@@ -1,2 +1,4 @@
 "Briefly analyze what the project is about. Project description: Blazor server ticketing app where users can view events, make bookings and pay via Stripe"
 
+"add pages for viewing events, making bookings and paying via stripe. Also include pages for viewing purchased tickets and past events"
+
