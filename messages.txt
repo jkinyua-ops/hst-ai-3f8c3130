@@ -1,0 +1,2 @@
+"Briefly analyze what the project is about. Project description: Blazor server ticketing app where users can view events, make bookings and pay via Stripe"
+
