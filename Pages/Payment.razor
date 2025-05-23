@@ -1,0 +1,68 @@
+@page "/payment/{EventId:int}"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<h1>Payment</h1>
+
+@if (eventDetails == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>@eventDetails.Title</h2>
+    <p>Quantity: @quantity</p>
+    <p>Total: $@(quantity * 10).00</p>
+
+    <div id="payment-form">
+        <!-- Stripe Elements Placeholder -->
+        <div id="card-element"></div>
+        <button id="submit" class="btn btn-primary mt-3">Pay Now</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    private Event eventDetails;
+    private int quantity;
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data fetching from a service
+        eventDetails = new Event
+        {
+            Id = EventId,
+            Title = $"Event {EventId}",
+            Description = "Event description goes here.",
+            Date = DateTime.Now.AddDays(30)
+        };
+
+        var uri = new Uri(NavigationManager.Uri);
+        quantity = int.Parse(System.Web.HttpUtility.ParseQueryString(uri.Query).Get("quantity") ?? "1");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeStripe", DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnPaymentSucceeded(string paymentIntentId)
+    {
+        // TODO: Update the database with the successful payment
+        NavigationManager.NavigateTo("/payment-confirmation");
+    }
+
+    public class Event
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+    }
+}
