@@ -1,0 +1,56 @@
+@page "/booking/{EventId:int}"
+@inject NavigationManager NavigationManager
+
+<h1>Book Tickets</h1>
+
+@if (eventDetails == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>@eventDetails.Title</h2>
+    <p>@eventDetails.Description</p>
+    <p>Date: @eventDetails.Date.ToLongDateString()</p>
+
+    <form>
+        <div class="form-group">
+            <label for="quantity">Number of Tickets:</label>
+            <input type="number" class="form-control" id="quantity" @bind="quantity" min="1" max="10" />
+        </div>
+        <button type="button" class="btn btn-primary mt-3" @onclick="ProceedToPayment">Proceed to Payment</button>
+    </form>
+}
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    private Event eventDetails;
+    private int quantity = 1;
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data fetching from a service
+        eventDetails = new Event
+        {
+            Id = EventId,
+            Title = $"Event {EventId}",
+            Description = "Event description goes here.",
+            Date = DateTime.Now.AddDays(30)
+        };
+    }
+
+    private void ProceedToPayment()
+    {
+        NavigationManager.NavigateTo($"/payment/{EventId}?quantity={quantity}");
+    }
+
+    public class Event
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+    }
+}
