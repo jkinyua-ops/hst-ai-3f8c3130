@@ -1,0 +1,55 @@
+@page "/my-tickets"
+
+<h1>My Tickets</h1>
+
+@if (tickets == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in tickets)
+            {
+                <tr>
+                    <td>@ticket.EventTitle</td>
+                    <td>@ticket.EventDate.ToShortDateString()</td>
+                    <td>@ticket.Quantity</td>
+                    <td>@ticket.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Ticket> tickets;
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data fetching from a service
+        tickets = new List<Ticket>
+        {
+            new Ticket { EventTitle = "Summer Concert", EventDate = DateTime.Now.AddDays(30), Quantity = 2, Status = "Confirmed" },
+            new Ticket { EventTitle = "Tech Conference", EventDate = DateTime.Now.AddDays(45), Quantity = 1, Status = "Confirmed" },
+            new Ticket { EventTitle = "Food Fair", EventDate = DateTime.Now.AddDays(-5), Quantity = 3, Status = "Completed" }
+        };
+    }
+
+    public class Ticket
+    {
+        public string EventTitle { get; set; }
+        public DateTime EventDate { get; set; }
+        public int Quantity { get; set; }
+        public string Status { get; set; }
+    }
+}
